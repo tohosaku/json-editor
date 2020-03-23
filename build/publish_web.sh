@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 chmod 600 ~/.ssh/id_rsa
 echo -e "Host github.com\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
