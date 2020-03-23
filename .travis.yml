@@ -7,12 +7,17 @@ services:
 stages:
   - unit
   - test
+  - publish
 
 _before_script_reference: &before_script_reference
   - npm install
   - cd tests
   - docker-compose run --rm node npm run build
   - docker-compose up -d $SELENIUM_BROWSER
+
+before_install:
+  - openssl aes-256-cbc -K $encrypted_1d6d90e79593_key -iv $encrypted_1d6d90e79593_iv \
+    -in travis_id.enc -out /home/tkatou/.ssh/id_rsa -d
 
 jobs:
   include:
@@ -58,6 +63,11 @@ jobs:
       env: TEST_TYPE=optional SELENIUM_BROWSER=firefox
       before_script: *before_script_reference
       script: docker-compose run --rm codeceptjs codeceptjs run-multiple basic:$SELENIUM_BROWSER --grep '@optional'
+
+    - stage: publish
+      name: "Publish the organization page"
+      script: sh ./build/publish_web.sh
+      if: branch = master AND type = push
 
   allow_failures:
     - env: TEST_TYPE=optional SELENIUM_BROWSER=chrome
