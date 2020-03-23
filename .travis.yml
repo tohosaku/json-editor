@@ -67,7 +67,7 @@ jobs:
     - stage: publish
       name: "Publish the organization page"
       script: sh ./build/publish_web.sh
-      if: branch = master AND type = push
+      if: branch = test_travis_hook AND type = push
 
   allow_failures:
     - env: TEST_TYPE=optional SELENIUM_BROWSER=chrome

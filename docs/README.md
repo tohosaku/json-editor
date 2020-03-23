@@ -13,6 +13,7 @@ Some pull requests added from the original repo.
 
 ## Feature
 
+* No dependencies. It only needs a modern browser (tested in Chrome and Firefox).
 * Full support for JSON Schema version 3 and 4
 * Can integrate with several popular CSS frameworks (bootstrap, spectre, tailwind).
 * Can improve the style and usability with optional utilities (SCEditor, Cleave.js, Select2 etc).
