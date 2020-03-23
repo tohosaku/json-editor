@@ -66,8 +66,9 @@ jobs:
 
     - stage: publish
       name: "Publish the organization page"
+      env: REPO=tohosaku/json-editor DOC_REPO=tohosaku/tohosaku.github.io.git BRANCH=test_travis_hook
       script: chmod 755 ./build/publish_web.sh && ./build/publish_web.sh
-      if: branch = test_travis_hook AND type = push
+      if: repo = env(REPO) AND branch = env(BRANCH) AND type = push
 
   allow_failures:
     - env: TEST_TYPE=optional SELENIUM_BROWSER=chrome

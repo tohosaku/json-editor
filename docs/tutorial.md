@@ -165,7 +165,6 @@ if (name) {
 }
 ```
 
-
 ### Validate
 
 When feasible, JSON Editor won't let users enter invalid data.  This is done by
