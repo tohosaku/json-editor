@@ -24,7 +24,7 @@ Some pull requests added from the original repo.
 
 ## Documentation
 
-* [Tutorial](https://json-editor.github.io/#/tutorial)
+* [Introduction](https://json-editor.github.io/#/introduction)
 
 ## License
 
