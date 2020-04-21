@@ -1,0 +1,22 @@
+{
+  "name": "@types/json-editor__json-editor",
+  "version": "2.2.0",
+  "main": "",
+  "types": "index.d.ts",
+  "scripts": {
+    "build": "tsc && dts-bundle-generator -o index.d.ts ./src/core.d.ts"
+  },
+  "author": {
+    "name": "Jeremy Dorn",
+    "email": "jeremy@jeremydorn.com",
+    "url": "http://jeremydorn.com"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@json-editor/json-editor": "^2.2.0"
+  },
+  "devDependencies": {
+    "dts-bundle-generator": "^4.3.0",
+    "typescript": "^3.8.3"
+  }
+}

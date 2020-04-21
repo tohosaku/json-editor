@@ -12,6 +12,11 @@ import { AbstractIconLib } from './iconlib'
 import styleRules from './style.css.js'
 
 export class JSONEditor {
+  /**
+   *
+   * @param {HTMLElement} element
+   * @param {*} options
+   */
   constructor (element, options = {}) {
     if (!(element instanceof Element)) throw new Error('element should be an instance of Element')
 
@@ -23,6 +28,9 @@ export class JSONEditor {
     this.template = this.options.template
     this.translate = this.options.translate || JSONEditor.defaults.translate
     this.uuid = 0
+    /**
+     * @private
+     */
     this.__data = {}
     const themeName = this.options.theme || JSONEditor.defaults.theme
     const themeClass = JSONEditor.defaults.themes[themeName]
@@ -271,6 +279,9 @@ export class JSONEditor {
     return engine.compile(template)
   }
 
+  /**
+   * @private
+   */
   _data (el, key, value) {
     /* Setting data */
     if (arguments.length === 3) {
@@ -304,11 +315,20 @@ export class JSONEditor {
     return this
   }
 
+  /**
+   *
+   * @param {string} path
+   */
   getEditor (path) {
     if (!this.editors) return
     return this.editors[path]
   }
 
+  /**
+   *
+   * @param {string} path
+   * @param {Function} callback
+   */
   watch (path, callback) {
     this.watchlist = this.watchlist || {}
     this.watchlist[path] = this.watchlist[path] || []
@@ -317,6 +337,11 @@ export class JSONEditor {
     return this
   }
 
+  /**
+   *
+   * @param {string} path
+   * @param {Function|undefined} callback
+   */
   unwatch (path, callback) {
     if (!this.watchlist || !this.watchlist[path]) return this
     /* If removing all callbacks for a path */
@@ -334,6 +359,10 @@ export class JSONEditor {
     return this
   }
 
+  /**
+   *
+   * @param {string} path
+   */
   notifyWatchers (path) {
     if (!this.watchlist || !this.watchlist[path]) return this
     for (let i = 0; i < this.watchlist[path].length; i++) {
@@ -341,6 +370,9 @@ export class JSONEditor {
     }
   }
 
+  /**
+   * @returns {boolean}
+   */
   isEnabled () {
     return !this.root || this.root.isEnabled()
   }
@@ -361,6 +393,11 @@ export class JSONEditor {
     return this.copyClipboard
   }
 
+  /**
+   *
+   * @param {string} themeName
+   * @param {*} rules
+   */
   addNewStyleRules (themeName, rules) {
     let styleTag = document.querySelector(`#theme-${themeName}`)
 
@@ -386,6 +423,12 @@ export class JSONEditor {
     })
   }
 
+  /**
+   *
+   * @param {string} themeName
+   * @param {*} rules
+   * @param {*} shadowRoot
+   */
   addNewStyleRulesToShadowRoot (themeName, rules, shadowRoot) {
     const qualifier = this.element.nodeName.toLowerCase()
     let cssText = ''
