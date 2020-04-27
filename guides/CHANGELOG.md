@@ -1,6 +1,10 @@
-### current development
+### 2.3.0-dev
 
-*no changes so far*
+### 2.2.1-current
+
+- AbstractEditor, AbstractTheme, AbstractIconlib had been removed, re-expose them
+- fix static property #724 #723
+- fix option remove_empty_properties #725 #728
 
 ### 2.2.0
 
