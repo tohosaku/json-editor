@@ -1,5 +1,7 @@
 import { trigger } from './utilities'
 
+import { JSONEditor } from './core.js'
+
 const matchKey = [
   'matches',
   'webkitMatchesSelector',
@@ -8,6 +10,11 @@ const matchKey = [
   'oMatchesSelector'].find(key => key in document.documentElement)
 
 export class AbstractTheme {
+  /**
+   *
+   * @param {JSONEditor} jsoneditor
+   * @param {Object} options
+   */
   constructor (jsoneditor, options = { disable_theme_rules: false }) {
     this.jsoneditor = jsoneditor
     Object.keys(options).forEach(key => {

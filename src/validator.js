@@ -1,7 +1,16 @@
 import { ipValidator } from './validators/ip-validator.js'
 import { extend, hasOwnProperty } from './utilities.js'
 
+import { JSONEditor } from './core.js'
+
 export class Validator {
+  /**
+   *
+   * @param { JSONEditor } jsoneditor
+   * @param {*} schema
+   * @param {*} options
+   * @param {*} defaults
+   */
   constructor (jsoneditor, schema, options, defaults) {
     this.jsoneditor = jsoneditor
     this.schema = schema || this.jsoneditor.schema

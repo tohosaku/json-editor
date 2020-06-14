@@ -1,11 +1,20 @@
 import { extend, hasOwnProperty } from './utilities.js'
 
+import { JSONEditor } from './core.js'
+import { Defaults } from './types'
+
 /**
  * All editors should extend from this class
  */
 export class AbstractEditor {
+  /**
+   *
+   * @param {Object} options
+   * @param {Defaults} defaults
+   */
   constructor (options, defaults) {
     this.defaults = defaults
+    /** @type { JSONEditor } */
     this.jsoneditor = options.jsoneditor
     this.theme = this.jsoneditor.theme
     this.template_engine = this.jsoneditor.template
@@ -13,6 +22,7 @@ export class AbstractEditor {
     this.translate = this.jsoneditor.translate || this.defaults.translate
     this.original_schema = options.schema
     this.schema = this.jsoneditor.expandSchema(this.original_schema)
+    /** @type {boolean} */
     this.active = true
     this.options = extend({}, (this.options || {}), (this.schema.options || {}), (options.schema.options || {}), options)
 

@@ -1,4 +1,5 @@
-import { resolvers } from './resolvers.js'
+import { resolvers } from './resolvers'
+import { Defaults } from './types'
 
 /* default theme */
 const theme = 'html'
@@ -13,7 +14,7 @@ const themes = {}
 const templates = {}
 const iconlibs = {}
 const editors = {}
-const languages = {}
+
 // eslint-disable-next-line camelcase
 const custom_validators = []
 
@@ -23,7 +24,7 @@ const default_language = 'en'
 // eslint-disable-next-line camelcase
 const language = default_language
 
-languages.en = {
+const en = {
   /**
    * When a property is not set
    */
@@ -258,6 +259,19 @@ languages.en = {
   button_delete_node_warning: 'Are you sure you want to remove this node?'
 }
 
+/**
+ * @typedef { typeof en } Language
+ */
+
+/**
+ * @typedef { Object<string,Language >} Languages
+ */
+
+/**
+ * @type { Languages }
+ */
+const languages = { en }
+
 /* Default per-editor options */
 Object.entries(editors).forEach(([i, editor]) => { editors[i].options = editor.options || {} })
 
@@ -266,7 +280,12 @@ function upload (type, file, cbs) {
   console.log('Upload handler required for upload editor')
 }
 
-/* String translate function */
+/**
+ * String translate function
+ * @param {string} key
+ * @param {Array<string>} variables
+ * @returns {string}
+ */
 function translate (key, variables) {
   const lang = defaults.languages[defaults.language]
   if (!lang) throw new Error(`Unknown language ${defaults.language}`)
@@ -292,7 +311,10 @@ const options = {
   max_depth: 0
 }
 
-/* This assignment was previously in index.js but makes more sense here */
+/**
+ * This assignment was previously in index.js but makes more sense here
+ * @type { Defaults }
+ */
 export const defaults = {
   options,
   theme,

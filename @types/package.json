@@ -1,10 +1,10 @@
 {
   "name": "@types/json-editor__json-editor",
-  "version": "2.2.0",
+  "version": "2.5.1",
   "main": "",
   "types": "index.d.ts",
   "scripts": {
-    "build": "tsc && dts-bundle-generator -o index.d.ts ./src/core.d.ts"
+    "build": "cpx '../src/*.d.ts' './src/' && tsc && dts-bundle-generator -o index.d.ts ./src/core.d.ts"
   },
   "author": {
     "name": "Jeremy Dorn",
@@ -13,10 +13,11 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@json-editor/json-editor": "^2.2.0"
+    "@json-editor/json-editor": "^2.5.1"
   },
   "devDependencies": {
     "dts-bundle-generator": "^4.3.0",
-    "typescript": "^3.8.3"
+    "typescript": "^3.9.5",
+    "cpx": "^1.5.0"
   }
 }
