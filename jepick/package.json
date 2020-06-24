@@ -1,0 +1,32 @@
+{
+  "name": "@json-editor/jepick",
+  "title": "JSONEditor Picker",
+  "description": "Build a subset of JSONEditor",
+  "version": "0.1.0",
+  "bin": {
+    "jepick": "bin/index.js"
+  },
+  "author": {
+    "name": "tohosaku",
+    "email": "tohosaku@users.osdn.me",
+    "url": "https://github.com/json-editor/json-editor"
+  },
+  "bugs": {
+    "url": "https://github.com/json-editor/json-editor/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/json-editor/json-editor.git"
+  },
+  "keywords": [
+    "json",
+    "schema",
+    "jsonschema",
+    "editor"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "webpack": "^4.43.0",
+    "yargs": "^15.3.1"
+  }
+}
