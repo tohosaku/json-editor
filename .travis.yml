@@ -13,7 +13,8 @@ _before_script_reference: &before_script_reference
   - cd tests
   - docker-compose up -d node $SELENIUM_BROWSER
   - docker-compose exec node npm run build
-  - curl http://127.0.0.1:9001/dist/jsoneditor.js -o jsoneditor.js
+  - wget http://127.0.0.1:9001/dist/jsoneditor.js
+  - ls -l jsoneditor.js
 jobs:
   include:
 
