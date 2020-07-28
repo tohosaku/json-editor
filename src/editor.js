@@ -220,28 +220,20 @@ export class AbstractEditor {
     }
 
     if (hasOwnProperty(this.schema, 'watch')) {
-      let path; let pathParts; let first; let root; let adjustedPath
       const myPath = this.container.getAttribute('data-schemapath')
 
-      Object.keys(this.schema.watch).forEach(name => {
-        path = this.schema.watch[name]
-        if (Array.isArray(path)) {
-          if (path.length < 2) return
-          pathParts = [path[0]].concat(path[1].split('.'))
-        } else {
-          pathParts = path.split('.')
-          if (!this.theme.closest(this.container, `[data-schemaid="${pathParts[0]}"]`)) pathParts.unshift('#')
-        }
-        first = pathParts.shift()
-
+      Object.entries(this.schema.watch).forEach(([name, path]) => {
+        const pathParts = this._splitPath(path)
+        if (pathParts === null) return
+        let first = pathParts.shift()
         if (first === '#') first = this.jsoneditor.schema.id || 'root'
 
         /* Find the root node for this template variable */
-        root = this.theme.closest(this.container, `[data-schemaid="${first}"]`)
+        const root = this.theme.closest(this.container, `[data-schemapath="${first}"]`)
         if (!root) throw new Error(`Could not find ancestor node with id ${first}`)
 
         /* Keep track of the root node and path for use when rendering the template */
-        adjustedPath = `${root.getAttribute('data-schemapath')}.${pathParts.join('.')}`
+        const adjustedPath = `${root.getAttribute('data-schemapath')}.${pathParts.join('.')}`
 
         if (myPath.startsWith(adjustedPath)) this.watchLoop = true
         this.jsoneditor.watch(adjustedPath, this.watch_listener)
@@ -253,6 +245,21 @@ export class AbstractEditor {
     /* Dynamic header */
     if (this.schema.headerTemplate) {
       this.header_template = this.jsoneditor.compileTemplate(this.schema.headerTemplate, this.template_engine)
+    }
+  }
+
+  _splitPath (path) {
+    if (Array.isArray(path)) {
+      if (path.length < 2) return null
+      return [path[0]].concat(path[1].split('.'))
+    } else {
+      const pathParts = path.split('.')
+      if (this.parent && pathParts[0] === '') {
+        pathParts[0] = this.parent.path
+      } else if (!this.theme.closest(this.container, `[data-schemaid="${pathParts[0]}"]`)) {
+        pathParts.unshift('#')
+      }
+      return pathParts
     }
   }
 
