@@ -1,6 +1,6 @@
 const webpack = require('webpack')
 const webpackMerge = require('webpack-merge')
-const RemoveStrictPlugin = require('remove-strict-webpack-plugin')
+const RemoveStrictPlugin = require('../build/RemoveStrictPlugin')
 const commonConfig = require('./webpack.common.js')
 const helpers = require('./helpers')
 
