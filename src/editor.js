@@ -1,7 +1,9 @@
 import { extend, hasOwnProperty } from './utilities.js'
 
-import { JSONEditor } from './core.js'
-import { Defaults } from './types'
+import { JSONEditor } from './core.js' // eslint-disable-line no-unused-vars
+import { AbstractTheme } from './theme.js' // eslint-disable-line no-unused-vars
+import { AbstractIconLib } from './iconlib.js' // eslint-disable-line no-unused-vars
+import { Defaults } from './types' // eslint-disable-line no-unused-vars
 
 /**
  * All editors should extend from this class
@@ -16,17 +18,19 @@ export class AbstractEditor {
     this.defaults = defaults
     /** @type { JSONEditor } */
     this.jsoneditor = options.jsoneditor
+    /** @type { AbstractTheme } */
     this.theme = this.jsoneditor.theme
     this.template_engine = this.jsoneditor.template
+    /** @type { AbstractIconLib } */
     this.iconlib = this.jsoneditor.iconlib
     this.translate = this.jsoneditor.translate || this.defaults.translate
     this.original_schema = options.schema
     this.schema = this.jsoneditor.expandSchema(this.original_schema)
-    /** @type {boolean} */
     this.active = true
     this.options = extend({}, (this.options || {}), (this.schema.options || {}), (options.schema.options || {}), options)
 
     if (!options.path && !this.schema.id) this.schema.id = 'root'
+    /** @type { string } */
     this.path = options.path || 'root'
     this.formname = options.formname || this.path.replace(/\.([^.]+)/g, '[$1]')
 

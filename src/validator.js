@@ -1,7 +1,7 @@
 import { ipValidator } from './validators/ip-validator.js'
 import { extend, hasOwnProperty } from './utilities.js'
 
-import { JSONEditor } from './core.js'
+import { JSONEditor } from './core.js' // eslint-disable-line no-unused-vars
 
 export class Validator {
   /**

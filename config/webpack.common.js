@@ -60,6 +60,9 @@ module.exports = {
         JSON.stringify(require('../package.json').version)
       )
     ),
+    new webpack.IgnorePlugin({
+      resourceRegExp: /types/
+    }),
     new CssToJSON({
       pattern: './src/**/*.css'
     })

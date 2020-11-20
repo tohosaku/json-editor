@@ -1,5 +1,5 @@
 import { resolvers } from './resolvers'
-import { Defaults } from './types'
+import { Defaults } from './types' // eslint-disable-line no-unused-vars
 
 /* default theme */
 const theme = 'html'

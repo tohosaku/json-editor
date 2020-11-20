@@ -1,4 +1,4 @@
-import { IconlibMapping } from './types'
+import { IconlibMapping } from './types' // eslint-disable-line no-unused-vars
 
 const defaultMapping = { collapse: '', expand: '', delete: '', edit: '', add: '', cancel: '', save: '', moveup: '', movedown: '' }
 

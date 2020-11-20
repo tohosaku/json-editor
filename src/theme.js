@@ -1,6 +1,6 @@
 import { trigger } from './utilities'
 
-import { JSONEditor } from './core.js'
+import { JSONEditor } from './core.js' // eslint-disable-line no-unused-vars
 
 const matchKey = [
   'matches',
