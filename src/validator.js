@@ -10,6 +10,7 @@ export class Validator {
     this.translateProperty = this.jsoneditor.translateProperty || defaults.translateProperty
     this.defaults = defaults
 
+    /** @private */
     this._validateSubSchema = {
       const (schema, value, path) {
         const valid = JSON.stringify(schema.const) === JSON.stringify(value) && !(Array.isArray(value) || typeof value === 'object')
@@ -153,6 +154,7 @@ export class Validator {
       }
     }
 
+    /** @private */
     this._validateNumberSubSchema = {
       multipleOf (schema, value, path) { return this._validateNumberSubSchemaMultipleDivisible(schema, value, path) },
       divisibleBy (schema, value, path) { return this._validateNumberSubSchemaMultipleDivisible(schema, value, path) },
@@ -212,6 +214,7 @@ export class Validator {
       }
     }
 
+    /** @private */
     this._validateStringSubSchema = {
       maxLength (schema, value, path) {
         const errors = []
@@ -248,6 +251,7 @@ export class Validator {
       }
     }
 
+    /** @private */
     this._validateArraySubSchema = {
       items (schema, value, path) {
         const errors = []
@@ -323,6 +327,7 @@ export class Validator {
       }
     }
 
+    /** @private */
     this._validateObjectSubSchema = {
       maxProperties (schema, value, path) {
         if (Object.keys(value).length > schema.maxProperties) {
@@ -385,6 +390,7 @@ export class Validator {
       }
     }
 
+    /** @private */
     this._validateObjectSubSchema2 = {
       propertyNames (schema, value, path, validatedProperties) {
         const errors = []
@@ -547,6 +553,7 @@ export class Validator {
     return fit
   }
 
+  /** @private */
   _getSchema (schema) {
     return typeof schema === 'undefined' ? extend({}, this.jsoneditor.expandRefs(this.schema)) : schema
   }
@@ -555,6 +562,7 @@ export class Validator {
     return this._validateSchema(this.schema, value)
   }
 
+  /** @private */
   _validateSchema (schema, value, path) {
     const errors = []
     path = path || this.jsoneditor.root.formname
@@ -607,6 +615,7 @@ export class Validator {
     return this._removeDuplicateErrors(errors)
   }
 
+  /** @private */
   _expandSchemaLink (schema, m) {
     const href = schema.links[m].href
     const data = this.jsoneditor.root.getValue()
@@ -617,6 +626,7 @@ export class Validator {
     return extend({}, schema, this.jsoneditor.refs[ref])
   }
 
+  /** @private */
   _validateV3Required (schema, value, path) {
     if (((typeof schema.required !== 'undefined' && schema.required === true) || (typeof schema.required === 'undefined' && this.jsoneditor.options.required_by_default === true)) && (schema.type !== 'info')) {
       return [{
@@ -628,6 +638,7 @@ export class Validator {
     return []
   }
 
+  /** @private */
   _validateByValueType (schema, value, path) {
     const errors = []
     if (value === null) return errors
@@ -692,6 +703,7 @@ export class Validator {
     return errors
   }
 
+  /** @private */
   _validateUUIDSchema (schema, value, path) {
     if (!(/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(value))) {
       return [{
@@ -703,6 +715,7 @@ export class Validator {
     return []
   }
 
+  /** @private */
   _validateNumberSubSchemaMultipleDivisible (schema, value, path) {
     const divisor = schema.multipleOf || schema.divisibleBy
     /* Vanilla JS, prone to floating point rounding errors (e.g. 1.14 / .01 == 113.99999) */
@@ -726,6 +739,7 @@ export class Validator {
     return []
   }
 
+  /** @private */
   _validateDateTimeSubSchema (schema, value, path) {
     const _validateInteger = (schema, value, path) => {
       /* The value is a timestamp */
@@ -809,6 +823,7 @@ export class Validator {
     return []
   }
 
+  /** @private */
   _validateCustomValidator (schema, value, path) {
     const errors = []
     /* Internal validators using the custom validator format */
@@ -826,6 +841,7 @@ export class Validator {
     return errors
   }
 
+  /** @private */
   _removeDuplicateErrors (errors) {
     return errors.reduce((err, obj) => {
       let first = true
@@ -844,6 +860,7 @@ export class Validator {
     }, [])
   }
 
+  /** @private */
   _checkType (type, value) {
     const types = {
       string: value => typeof value === 'string',

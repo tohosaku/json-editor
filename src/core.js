@@ -1,3 +1,4 @@
+import { Json, Schema } from './types' // eslint-disable-line no-unused-vars
 import { defaults } from './defaults.js'
 import { Validator } from './validator.js'
 import { SchemaLoader } from './schemaloader.js'
@@ -12,6 +13,11 @@ import { AbstractIconLib } from './iconlib'
 import styleRules from './style.css.js'
 
 export class JSONEditor {
+  /**
+   *
+   * @param {HTMLElement} element
+   * @param {*} options
+   */
   constructor (element, options = {}) {
     if (!(element instanceof Element)) throw new Error('element should be an instance of Element')
 
@@ -19,11 +25,16 @@ export class JSONEditor {
     this.options = extend({}, JSONEditor.defaults.options, options)
     this.ready = false
     this.copyClipboard = null
+    /** @type {Schema} */
     this.schema = this.options.schema
     this.template = this.options.template
     this.translate = this.options.translate || JSONEditor.defaults.translate
     this.translateProperty = this.options.translateProperty || JSONEditor.defaults.translateProperty
     this.uuid = 0
+
+    /**
+     * @private
+     */
     this.__data = {}
     const themeName = this.options.theme || JSONEditor.defaults.theme
     const themeClass = JSONEditor.defaults.themes[themeName]
@@ -31,8 +42,10 @@ export class JSONEditor {
     /* Load editors and selected theme style rules */
     if (!themeClass) throw new Error(`Unknown theme ${themeName}`)
     this.element.setAttribute('data-theme', themeName)
-    // eslint-disable-next-line new-cap
-    this.theme = new themeClass(this)
+
+    /** @type { AbstractTheme } */
+    this.theme = new themeClass(this) // eslint-disable-line new-cap
+
     const rules = extend(styleRules, this.getEditorsRules())
 
     /* Call addNewStyleRulesToShadowRoot if shadowRoot is found, otherwise call addNewStyleRules */
@@ -51,8 +64,10 @@ export class JSONEditor {
 
     /* Init icon class */
     const iconClass = JSONEditor.defaults.iconlibs[this.options.iconlib || JSONEditor.defaults.iconlib]
-    // eslint-disable-next-line new-cap
-    if (iconClass) this.iconlib = new iconClass()
+    if (iconClass) {
+      /** @type {AbstractIconLib} */
+      this.iconlib = new iconClass() // eslint-disable-line new-cap
+    }
 
     this.root_container = this.theme.getContainer()
     this.element.appendChild(this.root_container)
@@ -102,6 +117,9 @@ export class JSONEditor {
     }, fetchUrl, location)
   }
 
+  /**
+   * @returns {Json}
+   */
   getValue () {
     if (!this.ready) throw new Error("JSON Editor not ready yet.  Listen for 'ready' event before getting the value")
 
@@ -148,6 +166,11 @@ export class JSONEditor {
     this.destroyed = true
   }
 
+  /**
+   *
+   * @param {string} event
+   * @param {Function} callback
+   */
   on (event, callback) {
     this.callbacks = this.callbacks || {}
     this.callbacks[event] = this.callbacks[event] || []
@@ -156,6 +179,11 @@ export class JSONEditor {
     return this
   }
 
+  /**
+   *
+   * @param {string} event
+   * @param {Function} callback
+   */
   off (event, callback) {
     /* Specific callback */
     if (event && callback) {
@@ -220,6 +248,13 @@ export class JSONEditor {
     return JSONEditor.defaults.editors[classname]
   }
 
+  /**
+   *
+   * @param {*} editorClass
+   * @param {*} options
+   * @param {*} depthCounter
+   * @returns {AbstractEditor}
+   */
   createEditor (editorClass, options, depthCounter = 1) {
     options = extend({}, editorClass.options || {}, options)
     // eslint-disable-next-line new-cap
@@ -272,6 +307,9 @@ export class JSONEditor {
     return engine.compile(template)
   }
 
+  /**
+     * @private
+     */
   _data (el, key, value) {
     /* Setting data */
     if (arguments.length === 3) {
@@ -293,23 +331,41 @@ export class JSONEditor {
     }
   }
 
+  /**
+   *
+   * @param {AbstractEditor} editor
+   */
   registerEditor (editor) {
     this.editors = this.editors || {}
     this.editors[editor.path] = editor
     return this
   }
 
+  /**
+   *
+   * @param {AbstractEditor} editor
+   */
   unregisterEditor (editor) {
     this.editors = this.editors || {}
     this.editors[editor.path] = null
     return this
   }
 
+  /**
+   *
+   * @param {string} path
+   * @returns {AbstractEditor}
+   */
   getEditor (path) {
     if (!this.editors) return
     return this.editors[path]
   }
 
+  /**
+   *
+   * @param {string} path
+   * @param {Function} callback
+   */
   watch (path, callback) {
     this.watchlist = this.watchlist || {}
     this.watchlist[path] = this.watchlist[path] || []
@@ -318,6 +374,11 @@ export class JSONEditor {
     return this
   }
 
+  /**
+   *
+   * @param {string} path
+   * @param {Function} callback
+   */
   unwatch (path, callback) {
     if (!this.watchlist || !this.watchlist[path]) return this
     /* If removing all callbacks for a path */
@@ -335,6 +396,10 @@ export class JSONEditor {
     return this
   }
 
+  /**
+   *
+   * @param {string} path
+   */
   notifyWatchers (path) {
     if (!this.watchlist || !this.watchlist[path]) return this
     for (let i = 0; i < this.watchlist[path].length; i++) {
@@ -362,6 +427,11 @@ export class JSONEditor {
     return this.copyClipboard
   }
 
+  /**
+   *
+   * @param {string} themeName
+   * @param {*} rules
+   */
   addNewStyleRules (themeName, rules) {
     let styleTag = document.querySelector(`#theme-${themeName}`)
 
@@ -387,6 +457,12 @@ export class JSONEditor {
     })
   }
 
+  /**
+   *
+   * @param {string} themeName
+   * @param {*} rules
+   * @param {*} shadowRoot
+   */
   addNewStyleRulesToShadowRoot (themeName, rules, shadowRoot) {
     const qualifier = this.element.nodeName.toLowerCase()
     let cssText = ''

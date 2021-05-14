@@ -5,6 +5,7 @@
     "allowJs": true,
     "checkJs": false,
     "declaration": true,
+    "emitDeclarationOnly": true,
     "strict": true,
     "rootDir": ".",
     "outDir": "./types",

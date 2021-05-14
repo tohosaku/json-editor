@@ -1,9 +1,10 @@
 import { resolvers } from './resolvers.js'
+import { Defaults, Options } from './types' // eslint-disable-line no-unused-vars
 
-/* default theme */
+/** @type {string} default theme */
 const theme = 'html'
 
-/* default template engine */
+/** @type {string} default template engine */
 const template = 'default'
 
 /* Global callback list */
@@ -13,17 +14,21 @@ const themes = {}
 const templates = {}
 const iconlibs = {}
 const editors = {}
-const languages = {}
+
 // eslint-disable-next-line camelcase
 const custom_validators = []
 
 /* Translation strings and default languages */
-// eslint-disable-next-line camelcase
-const default_language = 'en'
+
+/** @type {string} */
+const default_language = 'en' // eslint-disable-line camelcase
 // eslint-disable-next-line camelcase
 const language = default_language
 
-languages.en = {
+/**
+ * @type {{ [key:string]: string }}
+ */
+const en = {
   /**
    * When a property is not set
    */
@@ -340,6 +345,19 @@ languages.en = {
   button_delete_node_warning: 'Are you sure you want to remove this node?'
 }
 
+/**
+ * @typedef { typeof en } Language
+ */
+
+/**
+ * @typedef {{ [lang:string]: Language }} Languages
+ */
+
+/**
+ * @type { Languages }
+ */
+const languages = { en }
+
 /* Default per-editor options */
 Object.entries(editors).forEach(([i, editor]) => { editors[i].options = editor.options || {} })
 
@@ -349,7 +367,11 @@ function upload (type, file, cbs) {
   console.log('Upload handler required for upload editor')
 }
 
-/* String translate function */
+/**
+ * String translate function
+ * @param {string} key
+ * @param {*} variables
+ */
 function translate (key, variables) {
   const lang = defaults.languages[defaults.language]
   if (!lang) throw new Error(`Unknown language ${defaults.language}`)
@@ -371,7 +393,10 @@ function translateProperty (text, variables) {
   return text
 }
 
-/* Default options when initializing JSON Editor */
+/**
+ * Default options when initializing JSON Editor
+ * @type {Options}
+ */
 const options = {
   upload,
   prompt_before_delete: true,
@@ -379,7 +404,10 @@ const options = {
   max_depth: 0
 }
 
-/* This assignment was previously in index.js but makes more sense here */
+/**
+ * This assignment was previously in index.js but makes more sense here
+ * @type {Defaults}
+ */
 export const defaults = {
   options,
   theme,
