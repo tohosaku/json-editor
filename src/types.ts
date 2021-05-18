@@ -26,6 +26,7 @@ export interface Defaults {
   default_language: string,
   language: string,
   translate: (key: string, variables: string[]) => string
+  translateProperty: (key: string | null) => string
 }
 
 export interface IconlibMapping {
@@ -58,3 +59,9 @@ export type Json =
   | null
   | { [property: string]: Json }
   | Json[];
+
+export type Error = {
+    path: string,
+    property: string,
+    message: string
+  }

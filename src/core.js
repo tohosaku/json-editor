@@ -1,4 +1,3 @@
-import { Json, Schema } from './types' // eslint-disable-line no-unused-vars
 import { defaults } from './defaults.js'
 import { Validator } from './validator.js'
 import { SchemaLoader } from './schemaloader.js'
@@ -25,7 +24,7 @@ export class JSONEditor {
     this.options = extend({}, JSONEditor.defaults.options, options)
     this.ready = false
     this.copyClipboard = null
-    /** @type {Schema} */
+    /** @type {import("./types").Schema} */
     this.schema = this.options.schema
     this.template = this.options.template
     this.translate = this.options.translate || JSONEditor.defaults.translate
@@ -77,6 +76,7 @@ export class JSONEditor {
     const loader = new SchemaLoader(this.options)
     const location = document.location.toString()
 
+    /** @type {(schema: import("./types").Schema, fileBase: string) => import("./types").Schema} */
     this.expandSchema = (schema, fileBase) => loader.expandSchema(schema, fileBase)
     this.expandRefs = (schema, fileBase) => loader.expandRefs(schema, fileBase)
     this.refs = loader.refs
@@ -118,7 +118,7 @@ export class JSONEditor {
   }
 
   /**
-   * @returns {Json}
+   * @returns {import("./types").Json}
    */
   getValue () {
     if (!this.ready) throw new Error("JSON Editor not ready yet.  Listen for 'ready' event before getting the value")
@@ -126,6 +126,9 @@ export class JSONEditor {
     return this.root.getValue()
   }
 
+  /**
+   * @param {import("./types").Json} value
+   */
   setValue (value) {
     if (!this.ready) throw new Error("JSON Editor not ready yet.  Listen for 'ready' event before setting the value")
 
@@ -133,6 +136,9 @@ export class JSONEditor {
     return this
   }
 
+  /**
+   * @param {import("./types").Json} value
+   */
   validate (value) {
     if (!this.ready) throw new Error("JSON Editor not ready yet.  Listen for 'ready' event before validating")
 

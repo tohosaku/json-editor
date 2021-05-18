@@ -2,6 +2,13 @@ import { ipValidator } from './validators/ip-validator.js'
 import { extend, hasOwnProperty } from './utilities.js'
 
 export class Validator {
+  /**
+   *
+   * @param {import("./core").JSONEditor} jsoneditor
+   * @param {import("./types").Schema} schema
+   * @param {{ custom_validators?: Function[] }} options
+   * @param {import("./types").Defaults} defaults
+   */
   constructor (jsoneditor, schema, options, defaults) {
     this.jsoneditor = jsoneditor
     this.schema = schema || this.jsoneditor.schema
@@ -529,6 +536,12 @@ export class Validator {
     }
   }
 
+  /**
+   *
+   * @param {import("./types").Json} value
+   * @param {import("./types").Schema} givenSchema
+   * @param {number} weight
+   */
   fitTest (value, givenSchema, weight = 10000000) {
     const fit = { match: 0, extra: 0 }
     if (typeof value === 'object' && value !== null) {
@@ -558,6 +571,10 @@ export class Validator {
     return typeof schema === 'undefined' ? extend({}, this.jsoneditor.expandRefs(this.schema)) : schema
   }
 
+  /**
+   * @param {import("./types").Json} value
+   * @returns {import("./types").Error[]}
+   */
   validate (value) {
     return this._validateSchema(this.schema, value)
   }
