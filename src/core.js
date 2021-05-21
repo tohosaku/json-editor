@@ -26,8 +26,11 @@ export class JSONEditor {
     this.copyClipboard = null
     /** @type {import("./types").Schema} */
     this.schema = this.options.schema
+    /** @type {string|import("./types").TemplateEngine} */
     this.template = this.options.template
+    /** @type {(key: string, variables?: string[]) => string} */
     this.translate = this.options.translate || JSONEditor.defaults.translate
+    /** @type {(key: string, variables?: string[]) => string} */
     this.translateProperty = this.options.translateProperty || JSONEditor.defaults.translateProperty
     this.uuid = 0
 
@@ -293,7 +296,13 @@ export class JSONEditor {
     return this
   }
 
+  /**
+   *
+   * @param {string} template
+   * @param {string|import("./types").TemplateEngine} name
+   */
   compileTemplate (template, name = JSONEditor.defaults.template) {
+    /** @type {import("./types").TemplateEngine} */
     let engine
 
     /* Specifying a preset engine */
@@ -342,6 +351,7 @@ export class JSONEditor {
    * @param {AbstractEditor} editor
    */
   registerEditor (editor) {
+    /** @type {{[path:string]:AbstractEditor}} */
     this.editors = this.editors || {}
     this.editors[editor.path] = editor
     return this
@@ -373,6 +383,7 @@ export class JSONEditor {
    * @param {Function} callback
    */
   watch (path, callback) {
+    /** @type {{[path:string]:Function[]}} */
     this.watchlist = this.watchlist || {}
     this.watchlist[path] = this.watchlist[path] || []
     this.watchlist[path].push(callback)
@@ -434,7 +445,7 @@ export class JSONEditor {
   }
 
   /**
-   *
+   * @private
    * @param {string} themeName
    * @param {*} rules
    */
@@ -464,7 +475,7 @@ export class JSONEditor {
   }
 
   /**
-   *
+   * @private
    * @param {string} themeName
    * @param {*} rules
    * @param {*} shadowRoot

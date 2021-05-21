@@ -9,10 +9,18 @@ export class AbstractIconLib {
     this.icon_prefix = iconPrefix
   }
 
+  /**
+   *
+   * @param {string} key
+   */
   getIconClass (key) {
     return this.mapping[key] ? this.icon_prefix + this.mapping[key] : null
   }
 
+  /**
+   *
+   * @param {string} key
+   */
   getIcon (key) {
     const iconclass = this.getIconClass(key)
 

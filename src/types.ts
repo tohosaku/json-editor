@@ -3,7 +3,7 @@ import { AbstractTheme } from './theme'
 import { AbstractIconLib } from './iconlib'
 import { Languages } from './defaults'
 
-export interface Options {
+export interface DefaultOptions {
   upload: Function
   prompt_before_delete: boolean,
   use_default_values: boolean,
@@ -12,12 +12,12 @@ export interface Options {
 
 export interface Defaults {
   iconlib?: AbstractIconLib,
-  options: Options,
+  options: DefaultOptions,
   theme: string,
-  template: string,
+  template: string | TemplateEngine,
   themes: { [key: string]: AbstractTheme },
   callbacks: any,
-  templates: { [key: string]: Function },
+  templates: { [key: string]: TemplateEngine },
   iconlibs: { [key: string]: AbstractIconLib },
   editors: { [key: string]: AbstractEditor },
   languages: Languages,
@@ -25,8 +25,8 @@ export interface Defaults {
   custom_validators: Function[],
   default_language: string,
   language: string,
-  translate: (key: string, variables: string[]) => string
-  translateProperty: (key: string | null) => string
+  translate: (key: string, variables?: string[]) => string
+  translateProperty: (key: string, variables?: string[]) => string
 }
 
 export interface IconlibMapping {
@@ -41,9 +41,8 @@ export interface IconlibMapping {
    movedown: string
 }
 
-export interface Editor {
-  getValue(): Json;
-  destroy(): void;
+export interface TemplateEngine {
+  compile(template:string): (context:Json) => string
 }
 
 export interface Schema {

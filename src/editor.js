@@ -6,24 +6,30 @@ import { extend, hasOwnProperty } from './utilities.js'
 export class AbstractEditor {
   constructor (options, defaults) {
     this.defaults = defaults
+    /** @type  {import("./core").JSONEditor} */
     this.jsoneditor = options.jsoneditor
     this.theme = this.jsoneditor.theme
     this.template_engine = this.jsoneditor.template
     this.iconlib = this.jsoneditor.iconlib
     this.translate = this.jsoneditor.translate || this.defaults.translate
     this.translateProperty = this.jsoneditor.translateProperty || this.defaults.translateProperty
+    /** @private */
     this.original_schema = options.schema
     this.schema = this.jsoneditor.expandSchema(this.original_schema)
     this.active = true
     this.options = extend({}, (this.options || {}), (this.schema.options || {}), (options.schema.options || {}), options)
 
+    /** @type {string} */
     this.formname = this.jsoneditor.options.form_name_root || 'root'
 
     if (!options.path && !this.schema.id) this.schema.id = this.formname
+    /** @type {string} */
     this.path = options.path || this.formname
     this.formname = options.formname || this.path.replace(/\.([^.]+)/g, '[$1]')
 
+    /** @type {AbstractEditor} */
     this.parent = options.parent
+    /** @type {string} */
     this.key = this.parent !== undefined ? this.path.split('.').slice(this.parent.path.split('.').length).join('.') : this.path
 
     this.link_watchers = []
@@ -33,6 +39,10 @@ export class AbstractEditor {
     this.registerDependencies()
   }
 
+  /**
+   *
+   * @param {AbstractEditor} editor
+   */
   onChildEditorChange (editor) {
     this.onChange(true)
   }
@@ -46,6 +56,10 @@ export class AbstractEditor {
     else if (this.jsoneditor) this.jsoneditor.onChange()
   }
 
+  /**
+   *
+   * @param {boolean} bubble
+   */
   onChange (bubble) {
     this.notify()
     if (this.watch_listener) this.watch_listener()
@@ -88,6 +102,7 @@ export class AbstractEditor {
   }
 
   registerDependencies () {
+    /** @type {boolean} */
     this.dependenciesFulfilled = true
     const deps = this.options.dependencies
     if (!deps) {
@@ -141,6 +156,11 @@ export class AbstractEditor {
     } else wrapper.style.display = displayMode
   }
 
+  /**
+   *
+   * @param {string} path
+   * @param {*} choices
+   */
   checkDependency (path, choices) {
     if (this.path === path || this.jsoneditor === null) {
       return
@@ -182,6 +202,10 @@ export class AbstractEditor {
     }
   }
 
+  /**
+   *
+   * @param {HTMLElement} container
+   */
   setContainer (container) {
     this.container = container
     if (this.schema.id) this.container.setAttribute('data-schemaid', this.schema.id)
@@ -189,6 +213,10 @@ export class AbstractEditor {
     this.container.setAttribute('data-schemapath', this.path)
   }
 
+  /**
+   *
+   * @param {HTMLElement} header
+   */
   setOptInCheckbox (header) {
     /* the active/deactive checbox control. */
 
@@ -298,6 +326,13 @@ export class AbstractEditor {
 
   onMove () {}
 
+  /**
+   *
+   * @param {string} text
+   * @param {string} icon
+   * @param {string} title
+   * @param {string[]} args
+   */
   getButton (text, icon, title, args = []) {
     const btnClass = `json-editor-btn-${icon}`
     if (!this.iconlib) icon = null
@@ -316,6 +351,14 @@ export class AbstractEditor {
     return btn
   }
 
+  /**
+   *
+   * @param {HTMLElement} button
+   * @param {string} text
+   * @param {string} icon
+   * @param {string} title
+   * @param {string[]} args
+   */
   setButtonText (button, text, icon, title, args = []) {
     if (!this.iconlib) icon = null
     else icon = this.iconlib.getIcon(icon)
@@ -331,6 +374,10 @@ export class AbstractEditor {
     return this.theme.setButtonText(button, text, icon, title)
   }
 
+  /**
+   *
+   * @param {HTMLElement} link
+   */
   addLink (link) {
     if (this.link_holder) this.link_holder.appendChild(link)
   }
@@ -469,6 +516,10 @@ export class AbstractEditor {
     }
   }
 
+  /**
+   *
+   * @param {boolean} titleOnly
+   */
   getHeaderText (titleOnly) {
     if (this.header_text) return this.header_text
     else if (titleOnly) return this.translateProperty(this.schema.title)
@@ -479,6 +530,10 @@ export class AbstractEditor {
     return this.path.split('.').length
   }
 
+  /**
+   *
+   * @param {string} txt
+   */
   cleanText (txt) {
     /* Clean out HTML tags from txt */
     const tmp = document.createElement('div')
@@ -499,6 +554,7 @@ export class AbstractEditor {
       const headerText = this.header_template(vars)
 
       if (headerText !== this.header_text) {
+        /** @type {string|null} */
         this.header_text = headerText
         this.updateHeaderText()
         this.notify()
@@ -513,6 +569,10 @@ export class AbstractEditor {
     }
   }
 
+  /**
+   *
+   * @param {import("./types").Json} value
+   */
   setValue (value) {
     this.value = value
   }
@@ -583,6 +643,7 @@ export class AbstractEditor {
     return null
   }
 
+  /** @returns {string} */
   getTitle () {
     return this.translateProperty(this.schema.title || this.key)
   }
@@ -664,12 +725,19 @@ export class AbstractEditor {
     return disp
   }
 
-  /* Replace space(s) with "-" to create valid id value */
+  /**
+   * Replace space(s) with "-" to create valid id value
+   * @param {string?} id
+   */
   getValidId (id) {
     id = id === undefined ? '' : id.toString()
     return id.replace(/\s+/g, '-')
   }
 
+  /**
+   *
+   * @param {string} inputAttribute
+   */
   setInputAttributes (inputAttribute) {
     if (this.schema.options && this.schema.options.inputAttributes) {
       const inputAttributes = this.schema.options.inputAttributes
@@ -682,6 +750,11 @@ export class AbstractEditor {
     }
   }
 
+  /**
+   *
+   * @param {string} scope
+   * @param {{[key:string]: any}} options
+   */
   expandCallbacks (scope, options) {
     const callback = this.defaults.callbacks[scope]
     Object.entries(options).forEach(([key, value]) => {
@@ -696,6 +769,10 @@ export class AbstractEditor {
     return options
   }
 
+  /**
+   *
+   * @param {import("./types").Error[]} errors
+   */
   showValidationErrors (errors) {
 
   }

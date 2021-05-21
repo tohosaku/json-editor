@@ -1,5 +1,5 @@
 import { resolvers } from './resolvers.js'
-import { Defaults, Options } from './types' // eslint-disable-line no-unused-vars
+import { Defaults, DefaultOptions } from './types' // eslint-disable-line no-unused-vars
 
 /** @type {string} default theme */
 const theme = 'html'
@@ -11,6 +11,7 @@ const template = 'default'
 const callbacks = {}
 
 const themes = {}
+/** @type {{[key:string]:import("types").TemplateEngine}} */
 const templates = {}
 const iconlibs = {}
 const editors = {}
@@ -370,7 +371,7 @@ function upload (type, file, cbs) {
 /**
  * String translate function
  * @param {string} key
- * @param {*} variables
+ * @param {string[]?} variables
  */
 function translate (key, variables) {
   const lang = defaults.languages[defaults.language]
@@ -389,13 +390,18 @@ function translate (key, variables) {
 
 /* Text element translate function */
 
+/**
+ *
+ * @param {string} text
+ * @param {string[]?} variables
+ */
 function translateProperty (text, variables) {
   return text
 }
 
 /**
  * Default options when initializing JSON Editor
- * @type {Options}
+ * @type {DefaultOptions}
  */
 const options = {
   upload,
